@@ -1,0 +1,22 @@
+{
+  "name": "apollo-link-printer",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/egorlem/apollo-link-printer.git"
+  },
+  "keywords": [
+    "apollo-client"
+  ],
+  "author": "Egor Lem",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/egorlem/apollo-link-printer/issues"
+  },
+  "homepage": "https://github.com/egorlem/apollo-link-printer#readme"
+}
