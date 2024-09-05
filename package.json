@@ -1,7 +1,7 @@
 {
   "name": "apollo-link-printer",
   "version": "0.1.0",
-  "description": "",
+  "description": "Pretty logger of Apollo GraphQL network operations packaged in a Apollo link",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -18,5 +18,9 @@
   "bugs": {
     "url": "https://github.com/egorlem/apollo-link-printer/issues"
   },
-  "homepage": "https://github.com/egorlem/apollo-link-printer#readme"
+  "homepage": "https://github.com/egorlem/apollo-link-printer#readme",
+  "devDependencies": {
+    "@apollo/client": "^3.11.7",
+    "typescript": "^5.5.4"
+  }
 }
