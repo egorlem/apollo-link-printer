@@ -3,7 +3,9 @@
   "version": "0.1.1",
   "description": "Pretty logger of Apollo GraphQL network operations packaged in a Apollo link",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest",
+    "build": "tsc",
+    "watch": "tsc -w"
   },
   "main": "lib/index.js",
   "module": "lib/index.js",
@@ -25,9 +27,12 @@
   },
   "homepage": "https://github.com/egorlem/apollo-link-printer#readme",
   "devDependencies": {
+    "@apollo/client": "^3.11.8",
+    "@babel/core": "^7.25.2",
+    "@babel/polyfill": "^7.12.1",
+    "@babel/runtime": "^7.25.6",
+    "@babel/runtime-corejs3": "^7.25.6",
+    "jest": "^29.7.0",
     "typescript": "^5.5.4"
-  },
-  "dependencies": {
-    "@apollo/client": "^3.11.7"
   }
 }
