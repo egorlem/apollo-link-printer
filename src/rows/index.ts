@@ -11,12 +11,17 @@ const rowBadgeStyle = `color: #cfc167; ${bold}`;
  * @param {*} Operation
  * @returns
  */
-// const messageRow = (operation) => {
-//     const { message, step } = operation.getContext();
-//     if (step) {
-//         console.log(`\x1b[1;33mStep :\x1b[0m \x1b[1m${step}\x1b[0m`);
-//     }
-// };
+export const messageRow = (operation: Operation) => {
+    const { message } = operation.getContext();
+
+    if (!message && typeof message !== 'string') {
+        return [];
+    }
+    return [
+        `%cMessage :%c ${message}`,
+        rowBadgeStyle, '',
+    ];
+};
 
 /**
  * @param {*} Operation
