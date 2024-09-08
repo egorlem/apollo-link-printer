@@ -30,6 +30,7 @@
     "@apollo/client": "^3.0.0"
   },
   "devDependencies": {
+    "@apollo/client": "^3.11.8",
     "@babel/core": "^7.25.2",
     "@babel/polyfill": "^7.12.1",
     "@babel/runtime": "^7.25.6",
