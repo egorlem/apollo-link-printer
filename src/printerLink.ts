@@ -1,38 +1,51 @@
 import { ApolloLink, NextLink, Operation } from '@apollo/client';
-import { fragmentRow, operationRow, variablesRow } from './rows';
+import { fragmentRow, messageRow, operationRow, variablesRow } from './rows';
 import { TLinkOptions } from './printerLink.types';
 
-// const prepareRows = () => {};
+const prepareSubrows = (operation: Operation) => {
+    const result = {
+        isSingleRow: true,
+        subrows: [],
+    }
+    const rows = [fragmentRow, variablesRow, messageRow];
 
-const printer = (operation: Operation, options: TLinkOptions) => {
-    const { collapsed = false } = options;
-    const group = collapsed ? 'groupCollapsed' : 'group';
-
-    const rows: any[] = [];
-
-    [fragmentRow, variablesRow].forEach((handler) => {
-        const r = handler(operation);
-        if (r) rows.push(r);
+    rows.forEach((handler) => {
+        const row = handler(operation);
+        
+        if (row.length) {
+            result.isSingleRow = false;
+            result.subrows.push(row);
+        }
     });
 
-    const log = rows.length ? group : 'log';
+    return result;
+};
 
+const printer = (operation: Operation, options: TLinkOptions) => {
+    const mainrow = operationRow(operation);
+    const { isSingleRow, subrows } = prepareSubrows(operation);
     try {
-        console[log](...operationRow(operation));
-        // console.log(variablesRow(operation));
-        rows.forEach((r) => {
-            console.log(...r);
-        });
-        console.groupEnd();
+        if (isSingleRow) {
+            console.log(...mainrow);
+        } else {
+            const { collapsed = false } = options;
+            const group = collapsed ? 'groupCollapsed' : 'group'
+
+            console[group](...mainrow) 
+            subrows.forEach((subrow) => {
+                console.log(...subrow);
+            });
+            console.groupEnd();
+        }     
     } catch (err) {
-        console.log(err);
+        console.error(err);
     }
 };
 
 function operationPrinter(options: TLinkOptions) {
     return new ApolloLink(((operation, forward) => {
         try {
-            const { print, ...otherOptions } = options;
+            const { print = true, ...otherOptions } = options;
 
             if (print) {
                 printer(operation, otherOptions);
