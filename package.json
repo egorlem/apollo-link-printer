@@ -5,7 +5,8 @@
   "scripts": {
     "test": "jest",
     "build": "tsc",
-    "watch": "tsc -w"
+    "watch": "tsc -w",
+    "deploy": "./scripts/deploy.sh"
   },
   "main": "lib/index.js",
   "module": "lib/index.js",
