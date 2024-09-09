@@ -40,4 +40,4 @@ cp README.md npm/
 cp LICENSE.md npm/
 
 echo "deploying to npm…"
-# (cd npm && npm publish) || (>&2 echo "If this failed with ENEEDAUTH, remember that 'yarn deploy' won't work because yarn hot-patches npm's registry to yarn pkg.com")
+(cd npm && npm publish) || (>&2 echo "If this failed with ENEEDAUTH, remember that 'yarn deploy' won't work because yarn hot-patches npm's registry to yarn pkg.com")
