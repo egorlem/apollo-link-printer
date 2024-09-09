@@ -5,7 +5,8 @@
   "scripts": {
     "test": "jest",
     "build": "tsc",
-    "watch": "tsc -w"
+    "watch": "tsc -w",
+    "deploy": "./scripts/deploy.sh"
   },
   "main": "lib/index.js",
   "module": "lib/index.js",
@@ -30,6 +31,7 @@
     "@apollo/client": "^3.0.0"
   },
   "devDependencies": {
+    "@apollo/client": "^3.11.8",
     "@babel/core": "^7.25.2",
     "@babel/polyfill": "^7.12.1",
     "@babel/runtime": "^7.25.6",
