@@ -1,12 +1,14 @@
 import { ApolloLink, NextLink, Operation } from '@apollo/client';
 import { fragmentRow, messageRow, operationRow, variablesRow } from './rows';
-import { TLinkOptions, TRows } from './printerLink.types';
+import { TPrinterLinkOptions, TRows } from './printerLink.types';
 
 const rowHandlerRecord = {
     fragment: fragmentRow,
     variables: variablesRow,
     message: messageRow,
 };
+
+const noop = () => [];
 
 const prepareSubrows = (operation: Operation, order: TRows[]) => {
     const result = {
@@ -15,7 +17,8 @@ const prepareSubrows = (operation: Operation, order: TRows[]) => {
     }
 
     order.forEach((rowKey) => {
-        const row = rowHandlerRecord[rowKey](operation);
+        const handler = rowHandlerRecord[rowKey] ?? noop;
+        const row = handler(operation);
 
         if (row.length) {
             result.isSingleRow = false;
@@ -26,7 +29,7 @@ const prepareSubrows = (operation: Operation, order: TRows[]) => {
     return result;
 };
 
-const printer = (operation: Operation, options: TLinkOptions) => {
+const printer = (operation: Operation, options: TPrinterLinkOptions) => {
     const { 
         collapsed = false, 
         order = ['fragment', 'variables', 'message'] 
@@ -50,7 +53,7 @@ const printer = (operation: Operation, options: TLinkOptions) => {
     }
 };
 
-function operationPrinter(options: TLinkOptions) {
+function operationPrinter(options: TPrinterLinkOptions) {
     return new ApolloLink(((operation, forward) => {
         try {
             const { print = true, ...otherOptions } = options;
@@ -72,7 +75,7 @@ function operationPrinter(options: TLinkOptions) {
 export class PrinterLink extends ApolloLink {
     private link: ApolloLink;
 
-    constructor(option: TLinkOptions = {}) {
+    constructor(option: TPrinterLinkOptions = {}) {
         super();
         this.link = operationPrinter(option);
     }
