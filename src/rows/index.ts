@@ -55,7 +55,7 @@ export const fragmentRow = ({ query: { definitions } }: Operation) => {
         return [];
     }
 
-    const text = II.length > 1 ? 'Includes fragments :' : 'Include fragment :';
+    const text = II.length > 1 ? 'Includes fragments :' : 'Includes fragment :';
     const fragmentsNames = II.join(', ');
     return [
         `%c${text} %c${fragmentsNames}`,

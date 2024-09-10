@@ -1,17 +1,22 @@
 import { ApolloLink, NextLink, Operation } from '@apollo/client';
 import { fragmentRow, messageRow, operationRow, variablesRow } from './rows';
-import { TLinkOptions } from './printerLink.types';
+import { TLinkOptions, TRows } from './printerLink.types';
 
-const prepareSubrows = (operation: Operation) => {
+const rowHandlerRecord = {
+    fragment: fragmentRow,
+    variables: variablesRow,
+    message: messageRow,
+};
+
+const prepareSubrows = (operation: Operation, order: TRows[]) => {
     const result = {
         isSingleRow: true,
         subrows: [],
     }
-    const rows = [fragmentRow, variablesRow, messageRow];
 
-    rows.forEach((handler) => {
-        const row = handler(operation);
-        
+    order.forEach((rowKey) => {
+        const row = rowHandlerRecord[rowKey](operation);
+
         if (row.length) {
             result.isSingleRow = false;
             result.subrows.push(row);
@@ -22,13 +27,16 @@ const prepareSubrows = (operation: Operation) => {
 };
 
 const printer = (operation: Operation, options: TLinkOptions) => {
+    const { 
+        collapsed = false, 
+        order = ['fragment', 'variables', 'message'] 
+    } = options;
     const mainrow = operationRow(operation);
-    const { isSingleRow, subrows } = prepareSubrows(operation);
+    const { isSingleRow, subrows } = prepareSubrows(operation, order);
     try {
         if (isSingleRow) {
             console.log(...mainrow);
         } else {
-            const { collapsed = false } = options;
             const group = collapsed ? 'groupCollapsed' : 'group'
 
             console[group](...mainrow) 
