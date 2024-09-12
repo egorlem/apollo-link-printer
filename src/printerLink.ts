@@ -69,8 +69,8 @@ function operationPrinter(options: TPrinterLinkOptions) {
 }
 
 /**
- * @doc https://github.com/egorlem/apollo-link-printer
  * @description Pretty logger of Apollo GraphQL network operations
+ * @doc https://github.com/egorlem/apollo-link-printer
  */
 export class PrinterLink extends ApolloLink {
     private link: ApolloLink;

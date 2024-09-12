@@ -9,7 +9,7 @@ const rowBadgeStyle = `color: #cfc167; ${bold}`;
 
 /**
  * @param {*} Operation
- * @returns
+ * @returns []
  */
 export const messageRow = (operation: Operation) => {
     const { message } = operation.getContext();
@@ -25,7 +25,7 @@ export const messageRow = (operation: Operation) => {
 
 /**
  * @param {*} Operation
- * @returns
+ * @returns []
  */
 export const variablesRow = ({ variables }: Operation) => {
     if (!Object.keys(variables).length) {
@@ -42,7 +42,7 @@ export const variablesRow = ({ variables }: Operation) => {
 
 /**
  * @param {*} Operation
- * @returns
+ * @returns []
  */
 export const fragmentRow = ({ query: { definitions } }: Operation) => {
     const II = definitions.reduce((acc, item) => {
@@ -65,7 +65,7 @@ export const fragmentRow = ({ query: { definitions } }: Operation) => {
 
 /**
  * @param {*} Operation
- * @returns
+ * @returns []
  */
 export const operationRow = ({ query: { definitions }, operationName }: Operation | any) => {
     const [{ operation: operationType }] = definitions;
