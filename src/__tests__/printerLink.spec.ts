@@ -22,8 +22,8 @@ const operation = {
   setContext: () => { },
 }
 
-describe('sum module', () => {
-  test('Defines the name of operation', () => {
+describe('Rows function', () => {
+  test('Operation Row: defines the name of operation', () => {
     const row = operationRow(operation);
     expect(row).toContain('%c QUERY %c ');
   });
