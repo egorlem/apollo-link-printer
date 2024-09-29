@@ -2,6 +2,7 @@
   "name": "apollo-link-printer",
   "version": "1.0.0",
   "description": "Pretty logger of Apollo GraphQL network operations packaged in a Apollo link",
+  "type": "module",
   "scripts": {
     "test": "jest",
     "build": "tsc",
@@ -34,9 +35,19 @@
     "@apollo/client": "^3.11.8",
     "@babel/core": "^7.25.2",
     "@babel/polyfill": "^7.12.1",
+    "@babel/preset-env": "^7.25.4",
+    "@babel/preset-typescript": "^7.24.7",
     "@babel/runtime": "^7.25.6",
     "@babel/runtime-corejs3": "^7.25.6",
+    "@types/jest": "^29.5.13",
+    "babel-jest": "^29.7.0",
     "jest": "^29.7.0",
-    "typescript": "^5.5.4"
+    "typescript": "^5.6.2"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "transformIgnorePatterns": [
+      "node_modules/(?!variables/.*)"
+    ]
   }
 }
