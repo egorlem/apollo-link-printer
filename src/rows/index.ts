@@ -3,9 +3,9 @@ import { Operation } from '@apollo/client';
 /* CSS */
 const bold = 'font-weight: bold';
 
-const titleBadgeStyle = `background-color: #abe9b2; color: black; border-radius: 2px; ${bold}`;
-const titleTextStyle = `${bold}`;
-const rowBadgeStyle = `color: #cfc167; ${bold}`;
+export const titleBadgeStyle = `background-color: #abe9b2; color: black; border-radius: 2px; ${bold}`;
+export const titleTextStyle = `${bold}`;
+export const rowBadgeStyle = `color: #cfc167; ${bold}`;
 
 /**
  * @param {*} Operation
@@ -55,7 +55,7 @@ export const fragmentRow = ({ query: { definitions } }: Operation) => {
         return [];
     }
 
-    const text = II.length > 1 ? 'Includes fragments :' : 'Include fragment :';
+    const text = II.length > 1 ? 'Includes fragments :' : 'Includes fragment :';
     const fragmentsNames = II.join(', ');
     return [
         `%c${text} %c${fragmentsNames}`,
