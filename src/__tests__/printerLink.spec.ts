@@ -112,7 +112,7 @@ describe('Message Row', () => {
       '%cMessage :%c from getGontext',
       rowBadgeStyle, ''
     ]
-    // @ts-ignore
+    // @ts-expect-error desc
     const row = messageRow(operation);
     expect(row).toEqual(expect.arrayContaining(expected));
   });
