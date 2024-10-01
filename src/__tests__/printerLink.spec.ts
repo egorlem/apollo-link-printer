@@ -68,13 +68,13 @@ describe('Fragemnt Row', () => {
       '%cIncludes fragment : %cMOCK_FRAGMENT_NAME',
       rowBadgeStyle, ''
     ];
-    // @ts-ignore
+    // @ts-expect-error desc
     const row = fragmentRow(operation);
     expect(row).toEqual(expect.arrayContaining(expected));
   });
 
   it('Title text isn`t plurality', () => {
-    // @ts-ignore
+    // @ts-expect-error desc
     const [text] = fragmentRow(operation);
     expect(text).not.toMatch(/%cIncludes fragments : %cMOCK_FRAGMENT_NAME/)
     expect(text).toMatch(/%cIncludes fragment : %cMOCK_FRAGMENT_NAME/)
@@ -85,7 +85,7 @@ describe('Fragemnt Row', () => {
       ...operation,
       query: {
         ...operation.query,
-        // @ts-ignore
+        // @ts-expect-error desc
         definitions: [DocumentNodeQuery]
       }
     });
@@ -100,7 +100,7 @@ describe('Variables Row', () => {
       rowBadgeStyle,
       ''
     ]
-    // @ts-ignore
+    // @ts-expect-error desc
     const row = variablesRow(operation);
     console.log(row)
     expect(row).toEqual(expect.arrayContaining(expected));
