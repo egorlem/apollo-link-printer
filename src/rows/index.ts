@@ -8,7 +8,7 @@ export const titleTextStyle = `${bold}`;
 export const rowBadgeStyle = `color: #cfc167; ${bold}`;
 
 /**
- * @param {*} Operation
+ * @param {Operation} operation
  * @returns
  */
 export const messageRow = (operation: Operation) => {
@@ -41,8 +41,8 @@ export const variablesRow = ({ variables }: Operation) => {
 };
 
 /**
- * @param {*} Operation
- * @returns
+ * @description takes information about the included fragments in the request and formats them
+ * @param {Operation} operation
  */
 export const fragmentRow = ({ query: { definitions } }: Operation) => {
     const II = definitions.reduce((acc, item) => {
@@ -64,8 +64,8 @@ export const fragmentRow = ({ query: { definitions } }: Operation) => {
 };
 
 /**
- * @param {*} Operation
- * @returns
+ * @description takes the value of operation type and operationName and formats them
+ * @param {Operation} operation
  */
 export const operationRow = ({ query: { definitions }, operationName }: Operation | any) => {
     const [{ operation: operationType }] = definitions;

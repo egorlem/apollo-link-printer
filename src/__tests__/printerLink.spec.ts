@@ -1,4 +1,12 @@
-import { fragmentRow, operationRow, rowBadgeStyle, titleBadgeStyle, titleTextStyle } from "../rows";
+import {
+  fragmentRow,
+  messageRow,
+  operationRow,
+  variablesRow,
+  rowBadgeStyle,
+  titleBadgeStyle,
+  titleTextStyle
+} from "../rows";
 
 /* MOCK OPERATION */
 const DocumentNodeQuery = {
@@ -32,19 +40,17 @@ const operation = {
   variables: {
     foo: 'bar',
   },
-  getContext: () => ({ foo: 'bar' }),
+  getContext: () => ({ message: 'from getGontext' }),
   setContext: () => { },
 }
 
-// .toBeDefined()
-
-// describe('Default', () => {
-//   expect(new PrinterLink()).toBeInstanceOf(ApolloLink);
-// })
-
 describe('Operation Row', () => {
   it('Contains the necessary elements', () => {
-    const expected = ['%c QUERY %c ', titleBadgeStyle, titleTextStyle]
+    const expected = [
+      '%c QUERY %c ',
+      titleBadgeStyle,
+      titleTextStyle
+    ];
     const row = operationRow(operation);
     expect(row).toEqual(expect.arrayContaining(expected));
   });
@@ -56,19 +62,24 @@ describe('Operation Row', () => {
 });
 
 describe('Fragemnt Row', () => {
+
   it('Contains the necessary elements', () => {
-    const expected = ['%cIncludes fragment : %cMOCK_FRAGMENT_NAME', rowBadgeStyle, '']
+    const expected = [
+      '%cIncludes fragment : %cMOCK_FRAGMENT_NAME',
+      rowBadgeStyle, ''
+    ];
     // @ts-ignore
     const row = fragmentRow(operation);
     expect(row).toEqual(expect.arrayContaining(expected));
   });
-  
+
   it('Title text isn`t plurality', () => {
     // @ts-ignore
     const [text] = fragmentRow(operation);
     expect(text).not.toMatch(/%cIncludes fragments : %cMOCK_FRAGMENT_NAME/)
     expect(text).toMatch(/%cIncludes fragment : %cMOCK_FRAGMENT_NAME/)
   })
+
   it('Row is empty', () => {
     const data = fragmentRow({
       ...operation,
@@ -80,4 +91,30 @@ describe('Fragemnt Row', () => {
     });
     expect(data).toHaveLength(0);
   })
+});
+
+describe('Variables Row', () => {
+  it('Contains the necessary elements', () => {
+    const expected = [
+      `%cVariables :%c ${JSON.stringify(operation.variables, null, 1)}`,
+      rowBadgeStyle,
+      ''
+    ]
+    // @ts-ignore
+    const row = variablesRow(operation);
+    console.log(row)
+    expect(row).toEqual(expect.arrayContaining(expected));
+  });
+});
+
+describe('Message Row', () => {
+  it('Contains the necessary elements', () => {
+    const expected = [
+      '%cMessage :%c from getGontext',
+      rowBadgeStyle, ''
+    ]
+    // @ts-ignore
+    const row = messageRow(operation);
+    expect(row).toEqual(expect.arrayContaining(expected));
+  });
 });
