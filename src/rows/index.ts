@@ -13,7 +13,6 @@ export const rowBadgeStyle = `color: #cfc167; ${bold}`;
  */
 export const messageRow = (operation: Operation) => {
     const { message } = operation.getContext();
-
     if (!message && typeof message !== 'string') {
         return [];
     }
@@ -67,6 +66,7 @@ export const fragmentRow = ({ query: { definitions } }: Operation) => {
  * @description takes the value of operation type and operationName and formats them
  * @param {Operation} operation
  */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const operationRow = ({ query: { definitions }, operationName }: Operation | any) => {
     const [{ operation: operationType }] = definitions;
 
