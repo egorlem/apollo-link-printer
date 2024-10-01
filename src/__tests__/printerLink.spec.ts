@@ -102,7 +102,6 @@ describe('Variables Row', () => {
     ]
     // @ts-expect-error desc
     const row = variablesRow(operation);
-    console.log(row)
     expect(row).toEqual(expect.arrayContaining(expected));
   });
 });
