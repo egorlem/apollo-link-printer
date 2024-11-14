@@ -72,7 +72,7 @@ export const operationRow = ({ query: { definitions = [] }, operationName }: Ope
     const operationType = definition.operation || 'unknown'
 
     return [
-        `%c ${operationType.toUpperCase()} %c ${operationName} _DEV_`,
+        `%c ${operationType.toUpperCase()} %c ${operationName}`,
         titleBadgeStyle, titleTextStyle,
     ];
 };
