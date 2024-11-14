@@ -67,11 +67,12 @@ export const fragmentRow = ({ query: { definitions } }: Operation) => {
  * @param {Operation} operation
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const operationRow = ({ query: { definitions }, operationName }: Operation | any) => {
-    const [{ operation: operationType }] = definitions;
+export const operationRow = ({ query: { definitions = [] }, operationName }: Operation | any) => {
+    const definition = definitions.find(({ kind }) => kind === 'OperationDefinition');
+    const operationType = definition.operation || 'unknown'
 
     return [
-        `%c ${operationType.toUpperCase()} %c ${operationName}`,
+        `%c ${operationType.toUpperCase()} %c ${operationName} _DEV_`,
         titleBadgeStyle, titleTextStyle,
     ];
 };
