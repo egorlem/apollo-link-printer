@@ -1,6 +1,6 @@
 import { ApolloLink, NextLink, Operation } from '@apollo/client';
-import { fragmentRow, messageRow, operationRow, variablesRow } from './rows';
-import { TLinkOptions } from './printerLink.types';
+import { fragmentRow, messageRow, operationRow, variablesRow } from './rows/index.js';
+import { TLinkOptions } from './printerLink.types.js';
 
 const prepareSubrows = (operation: Operation) => {
     const result = {
