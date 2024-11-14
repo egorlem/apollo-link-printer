@@ -1,1 +1,1 @@
-export { PrinterLink } from './printerLink';
+export { PrinterLink } from './printerLink.js';
