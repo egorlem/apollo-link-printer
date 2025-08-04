@@ -51,12 +51,12 @@ describe('Operation Row', () => {
       titleBadgeStyle,
       titleTextStyle
     ];
-    const row = operationRow(operation);
+    const row = operationRow(operation, 'css', true, []);
     expect(row).toEqual(expect.arrayContaining(expected));
   });
 
   it('Defines the name of operation', () => {
-    const row = operationRow(operation);
+    const row = operationRow(operation, 'css', true, []);
     expect(row).toContain('%c QUERY %c ');
   });
 });
@@ -88,7 +88,7 @@ describe('Fragemnt Row', () => {
         // @ts-expect-error desc
         definitions: [DocumentNodeQuery]
       }
-    });
+    }, 'css');
     expect(data).toHaveLength(0);
   })
 });
@@ -101,7 +101,7 @@ describe('Variables Row', () => {
       ''
     ]
     // @ts-expect-error desc
-    const row = variablesRow(operation);
+    const row = variablesRow(operation, 'css');
     expect(row).toEqual(expect.arrayContaining(expected));
   });
 });
@@ -113,7 +113,7 @@ describe('Message Row', () => {
       rowBadgeStyle, ''
     ]
     // @ts-expect-error desc
-    const row = messageRow(operation);
+    const row = messageRow(operation, 'css');
     expect(row).toEqual(expect.arrayContaining(expected));
   });
 });
