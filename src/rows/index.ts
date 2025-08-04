@@ -1,4 +1,5 @@
 import { Operation } from '@apollo/client';
+import { TStyle } from '../printerLink.types';
 
 /* CSS */
 const bold = 'font-weight: bold';
@@ -11,11 +12,16 @@ export const rowBadgeStyle = `color: #cfc167; ${bold}`;
  * @param {Operation} operation
  * @returns
  */
-export const messageRow = (operation: Operation) => {
+export const messageRow = (operation: Operation, style: TStyle) => {
     const { message } = operation.getContext();
     if (!message && typeof message !== 'string') {
         return [];
     }
+
+    if (style === 'off') {
+        return [`Message : ${message}`,]
+    };
+
     return [
         `%cMessage :%c ${message}`,
         rowBadgeStyle, '',
@@ -26,12 +32,16 @@ export const messageRow = (operation: Operation) => {
  * @param {*} Operation
  * @returns
  */
-export const variablesRow = ({ variables }: Operation) => {
+export const variablesRow = ({ variables }: Operation, style: TStyle) => {
     if (!Object.keys(variables).length) {
         return [];
     }
 
     const content = JSON.stringify(variables, null, 1);
+
+    if (style === 'off') {
+        return [`Variables : ${content}`,]
+    };
 
     return [
         `%cVariables :%c ${content}`,
@@ -43,7 +53,7 @@ export const variablesRow = ({ variables }: Operation) => {
  * @description takes information about the included fragments in the request and formats them
  * @param {Operation} operation
  */
-export const fragmentRow = ({ query: { definitions } }: Operation) => {
+export const fragmentRow = ({ query: { definitions } }: Operation, style: TStyle) => {
     const II = definitions.reduce((acc, item) => {
         const isFragementType = item.kind === 'FragmentDefinition';
         if (isFragementType) { return [...acc, item.name.value]; }
@@ -56,6 +66,11 @@ export const fragmentRow = ({ query: { definitions } }: Operation) => {
 
     const text = II.length > 1 ? 'Includes fragments :' : 'Includes fragment :';
     const fragmentsNames = II.join(', ');
+
+    if (style === 'off') {
+        return [`${text} ${fragmentsNames}`,]
+    };
+
     return [
         `%c${text} %c${fragmentsNames}`,
         rowBadgeStyle, '',
@@ -66,15 +81,19 @@ export const fragmentRow = ({ query: { definitions } }: Operation) => {
  * @description takes the value of operation type and operationName and formats them
  * @param {Operation} operation
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const operationRow = ({ query: { definitions = [] }, operationName }: Operation | any) => {
+export const operationRow = (
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    { query: { definitions = [] }, operationName }: Operation | any, style: TStyle
+) => {
     const definition = definitions.find(({ kind }) => kind === 'OperationDefinition');
     const operationType = definition.operation || 'unknown'
+
+    if (style === 'off') {
+        return [`${operationType.toUpperCase()} : ${operationName}`]
+    };
 
     return [
         `%c ${operationType.toUpperCase()} %c ${operationName}`,
         titleBadgeStyle, titleTextStyle,
     ];
 };
-
-

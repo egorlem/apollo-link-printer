@@ -2,15 +2,18 @@ import { ApolloLink, NextLink, Operation } from '@apollo/client';
 import { fragmentRow, messageRow, operationRow, variablesRow } from './rows/index.js';
 import { TLinkOptions } from './printerLink.types.js';
 
-const prepareSubrows = (operation: Operation) => {
+const prepareSubrows = (operation: Operation, options: TLinkOptions) => {
     const result = {
         isSingleRow: true,
         subrows: [],
     }
+    const { style = 'css' } = options;
+
+
     const rows = [fragmentRow, variablesRow, messageRow];
 
     rows.forEach((handler) => {
-        const row = handler(operation);
+        const row = handler(operation, style);
         
         if (row.length) {
             result.isSingleRow = false;
@@ -22,8 +25,10 @@ const prepareSubrows = (operation: Operation) => {
 };
 
 const printer = (operation: Operation, options: TLinkOptions) => {
-    const mainrow = operationRow(operation);
-    const { isSingleRow, subrows } = prepareSubrows(operation);
+    const { style = 'css' } = options;
+    const mainrow = operationRow(operation, style);
+    const { isSingleRow, subrows } = prepareSubrows(operation, options);
+    
     try {
         if (isSingleRow) {
             console.log(...mainrow);
