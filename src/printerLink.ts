@@ -1,5 +1,5 @@
 import { ApolloLink, NextLink, Operation } from '@apollo/client';
-import { fragmentRow, messageRow, operationRow, variablesRow } from './rows/index.js';
+import { errorsRow, fragmentRow, messageRow, operationRow, variablesRow, } from './rows/index.js';
 import { TLinkOptions } from './printerLink.types.js';
 
 const prepareSubrows = (operation: Operation, options: TLinkOptions) => {
@@ -9,12 +9,11 @@ const prepareSubrows = (operation: Operation, options: TLinkOptions) => {
     }
     const { style = 'css' } = options;
 
-
     const rows = [fragmentRow, variablesRow, messageRow];
 
     rows.forEach((handler) => {
         const row = handler(operation, style);
-        
+
         if (row.length) {
             result.isSingleRow = false;
             result.subrows.push(row);
@@ -24,11 +23,17 @@ const prepareSubrows = (operation: Operation, options: TLinkOptions) => {
     return result;
 };
 
-const printer = (operation: Operation, options: TLinkOptions) => {
+const printer = (
+    operation: Operation,
+    options: TLinkOptions,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    errors: any = [],
+    isOK: boolean
+) => {
     const { style = 'css' } = options;
-    const mainrow = operationRow(operation, style);
+    const mainrow = operationRow(operation, style, isOK, errors);
     const { isSingleRow, subrows } = prepareSubrows(operation, options);
-    
+
     try {
         if (isSingleRow) {
             console.log(...mainrow);
@@ -36,12 +41,16 @@ const printer = (operation: Operation, options: TLinkOptions) => {
             const { collapsed = false } = options;
             const group = collapsed ? 'groupCollapsed' : 'group'
 
-            console[group](...mainrow) 
+            console[group](...mainrow)
+            errors.forEach((error) => {
+                const subrow = errorsRow(error, style);
+                console.log(...subrow);
+            })
             subrows.forEach((subrow) => {
                 console.log(...subrow);
             });
             console.groupEnd();
-        }     
+        }
     } catch (err) {
         console.error(err);
     }
@@ -49,16 +58,19 @@ const printer = (operation: Operation, options: TLinkOptions) => {
 
 function operationPrinter(options: TLinkOptions) {
     return new ApolloLink(((operation, forward) => {
-        try {
-            const { print = true, ...otherOptions } = options;
-
-            if (print) {
-                printer(operation, otherOptions);
+        return forward(operation).map((response) => {
+            try {
+                const { print = true, ...otherOptions } = options;
+                if (print) {
+                    const { errors = [] } = response;
+                    const isOK = 'data' in response;
+                    printer(operation, otherOptions, errors, isOK);
+                }
+            } catch (errMsg) {
+                console.error(errMsg);
             }
-        } catch (errMsg) {
-            console.error(errMsg);
-        }
-        return forward(operation);
+            return response;
+        });
     }));
 }
 

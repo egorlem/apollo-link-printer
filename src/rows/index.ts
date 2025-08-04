@@ -4,9 +4,24 @@ import { TStyle } from '../printerLink.types';
 /* CSS */
 const bold = 'font-weight: bold';
 
-export const titleBadgeStyle = `background-color: #abe9b2; color: black; border-radius: 2px; ${bold}`;
+export const titleBadgeStyle = `background-color: #abe9b2; color: #000000; ${bold}`;
+export const titleBadgeStyleNoResponse = `background-color: #FF6275; color: #000000; ${bold}`;
 export const titleTextStyle = `${bold}`;
 export const rowBadgeStyle = `color: #cfc167; ${bold}`;
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const errorsRow = (error: any, style: TStyle) => {
+       const { message } = error;
+    
+     if (style === 'off') {
+        return [`Error message : ${message}`,]
+    };
+
+    return [
+        `%cError message :%c ${message}`,
+        rowBadgeStyle, '',
+    ];
+}
 
 /**
  * @param {Operation} operation
@@ -82,8 +97,11 @@ export const fragmentRow = ({ query: { definitions } }: Operation, style: TStyle
  * @param {Operation} operation
  */
 export const operationRow = (
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    { query: { definitions = [] }, operationName }: Operation | any, style: TStyle
+    /* eslint-disable @typescript-eslint/no-explicit-any */
+    { query: { definitions = [] }, operationName }: Operation | any, 
+    style: TStyle, 
+    isOK: boolean,
+    errors: any = [],
 ) => {
     const definition = definitions.find(({ kind }) => kind === 'OperationDefinition');
     const operationType = definition.operation || 'unknown'
@@ -92,8 +110,20 @@ export const operationRow = (
         return [`${operationType.toUpperCase()} : ${operationName}`]
     };
 
-    return [
+    const titleStyle = isOK ? titleBadgeStyle : titleBadgeStyleNoResponse;
+    const isError = !!errors.length;
+
+    const ok = [
         `%c ${operationType.toUpperCase()} %c ${operationName}`,
-        titleBadgeStyle, titleTextStyle,
+        titleStyle, titleTextStyle,
     ];
+    
+    const error = [
+        `%c ${operationType.toUpperCase()} %c ERROR %c ${operationName}`,
+        titleStyle, titleBadgeStyleNoResponse, titleTextStyle,
+    ];
+
+    const message = isError ?  error : ok;
+
+    return message;
 };
